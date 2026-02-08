@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Standalone aicommit script
+# Can be added to PATH for use outside of ZSH plugin
+
+SCRIPT_DIR="${0:A:h}"
+PLUGIN_DIR="${SCRIPT_DIR:h}"
+
+source "${PLUGIN_DIR}/autocommitmessage.plugin.zsh"
+
+aicommit "$@"

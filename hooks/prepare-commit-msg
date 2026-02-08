@@ -1,0 +1,83 @@
+#!/usr/bin/env zsh
+# AI commit message generator - prepare-commit-msg hook
+# Generates conventional commit messages automatically
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Skip if message already provided (-m flag, amend, merge, etc.)
+if [[ -n "$COMMIT_SOURCE" ]]; then
+  exit 0
+fi
+
+# Skip if message file already has content (not just comments)
+if grep -q "^[^#]" "$COMMIT_MSG_FILE" 2>/dev/null; then
+  exit 0
+fi
+
+# Check for jq
+if ! command -v jq &>/dev/null; then
+  echo "Warning: jq required for AI commit. Install: brew install jq" >&2
+  exit 0
+fi
+
+# Get staged diff
+diff=$(git diff --cached --no-color)
+if [[ -z "$diff" ]]; then
+  exit 0
+fi
+
+# Truncate if too long
+if [[ ${#diff} -gt 4000 ]]; then
+  diff="${diff:0:4000}
+
+[truncated...]"
+fi
+
+prompt="Generate a conventional commit message for this diff.
+Format: <type>(<scope>): <description>
+Types: feat, fix, docs, style, refactor, test, chore
+Keep under 72 chars. Output ONLY the commit message.
+
+$diff"
+
+message=""
+
+# Try Anthropic first
+if [[ -n "$ANTHROPIC_API_KEY" ]]; then
+  response=$(curl -s "https://api.anthropic.com/v1/messages" \
+    -H "Content-Type: application/json" \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -d "$(jq -n --arg prompt "$prompt" '{
+      model: "claude-3-5-haiku-latest",
+      max_tokens: 100,
+      messages: [{role: "user", content: $prompt}]
+    }')" 2>/dev/null)
+  message=$(echo "$response" | jq -r '.content[0].text // empty' 2>/dev/null)
+
+# Fall back to OpenAI
+elif [[ -n "$OPENAI_API_KEY" ]]; then
+  response=$(curl -s "https://api.openai.com/v1/chat/completions" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OPENAI_API_KEY" \
+    -d "$(jq -n --arg prompt "$prompt" '{
+      model: "gpt-4o-mini",
+      max_tokens: 100,
+      messages: [{role: "user", content: $prompt}]
+    }')" 2>/dev/null)
+  message=$(echo "$response" | jq -r '.choices[0].message.content // empty' 2>/dev/null)
+fi
+
+# Write message if we got one
+if [[ -n "$message" ]]; then
+  # Clean up quotes and whitespace
+  message=$(echo "$message" | sed 's/^["`'"'"']*//;s/["`'"'"']*$//' | xargs)
+
+  # Prepend to commit message file (keep existing comments)
+  echo "$message" > "$COMMIT_MSG_FILE.tmp"
+  cat "$COMMIT_MSG_FILE" >> "$COMMIT_MSG_FILE.tmp"
+  mv "$COMMIT_MSG_FILE.tmp" "$COMMIT_MSG_FILE"
+
+  echo "AI generated: $message" >&2
+fi
