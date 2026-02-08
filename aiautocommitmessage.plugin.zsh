@@ -1,5 +1,5 @@
 # autocommitmessage - AI-powered conventional commit message generator
-# https://github.com/tawan/autocommitmessage
+# https://github.com/tawanorg/aiautocommitmessage
 
 # Store plugin path for aicommit-on
 AUTOCOMMITMESSAGE_PLUGIN="${0:A}"

@@ -5,6 +5,6 @@
 SCRIPT_DIR="${0:A:h}"
 PLUGIN_DIR="${SCRIPT_DIR:h}"
 
-source "${PLUGIN_DIR}/autocommitmessage.plugin.zsh"
+source "${PLUGIN_DIR}/aiautocommitmessage.plugin.zsh"
 
 aicommit "$@"

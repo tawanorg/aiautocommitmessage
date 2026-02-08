@@ -6,4 +6,4 @@
 AUTOCOMMITMESSAGE_DIR="${0:A:h}"
 
 # Source the main plugin file
-source "${AUTOCOMMITMESSAGE_DIR}/autocommitmessage.plugin.zsh"
+source "${AUTOCOMMITMESSAGE_DIR}/aiautocommitmessage.plugin.zsh"

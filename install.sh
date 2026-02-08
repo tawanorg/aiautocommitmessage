@@ -3,8 +3,8 @@
 
 set -e
 
-INSTALL_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/autocommitmessage"
-REPO_URL="https://github.com/tawan/autocommitmessage"
+INSTALL_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/aiautocommitmessage"
+REPO_URL="https://github.com/tawanorg/aiautocommitmessage"
 
 echo "Installing autocommitmessage..."
 
@@ -29,8 +29,8 @@ chmod +x "$INSTALL_DIR/bin/aicommit"
 echo ""
 echo "Installation complete!"
 echo ""
-echo "Add 'autocommitmessage' to your plugins in ~/.zshrc:"
-echo "  plugins=(... autocommitmessage)"
+echo "Add 'aiautocommitmessage' to your plugins in ~/.zshrc:"
+echo "  plugins=(... aiautocommitmessage)"
 echo ""
 echo "Then reload your shell:"
 echo "  source ~/.zshrc"

@@ -1,4 +1,4 @@
-# autocommitmessage
+# aiautocommitmessage
 
 AI-powered conventional commit message generator for ZSH. Uses Claude Haiku or GPT-4o-mini for fast, accurate commit messages.
 
@@ -20,31 +20,31 @@ AI-powered conventional commit message generator for ZSH. Uses Claude Haiku or G
 ### Oh My ZSH
 
 ```bash
-git clone https://github.com/tawan/autocommitmessage ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autocommitmessage
+git clone https://github.com/tawanorg/aiautocommitmessage ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/aiautocommitmessage
 ```
 
 Add to `~/.zshrc`:
 ```bash
-plugins=(... autocommitmessage)
+plugins=(... aiautocommitmessage)
 ```
 
 ### Zinit
 
 ```bash
-zinit light tawan/autocommitmessage
+zinit light tawanorg/aiautocommitmessage
 ```
 
 ### Manual
 
 ```bash
-git clone https://github.com/tawan/autocommitmessage ~/.autocommitmessage
-echo 'source ~/.autocommitmessage/autocommitmessage.zsh' >> ~/.zshrc
+git clone https://github.com/tawanorg/aiautocommitmessage ~/.aiautocommitmessage
+echo 'source ~/.aiautocommitmessage/aiautocommitmessage.zsh' >> ~/.zshrc
 ```
 
 ### One-liner
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tawan/autocommitmessage/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tawanorg/aiautocommitmessage/main/install.sh | bash
 ```
 
 ## Configuration
